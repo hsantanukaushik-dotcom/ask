@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Love App</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+  }
+
+  .card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    width: 90%;
+    max-width: 360px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    animation: pop 0.6s ease;
+    z-index: 10;
+  }
+
+  @keyframes pop {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  input {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+
+  button {
+    padding: 12px 25px;
+    font-size: 18px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    margin: 8px;
+  }
+
+  #startBtn {
+    background: #ff4d88;
+    color: white;
+  }
+
+  #yesBtn {
+    background: #ff4d88;
+    color: white;
+  }
+
+  #noBtn {
+    background: #555;
+    color: white;
+    position: absolute;
+  }
+
+  #question, #message {
+    display: none;
+  }
+
+  #message {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #ff2f6d;
+    animation: fadeIn 1s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .heart {
+    position: absolute;
+    animation: float 5s linear infinite;
+    opacity: 0.7;
+    font-size: 20px;
+  }
+
+  @keyframes float {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); opacity: 0; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card" id="setup">
+  <h1>Enter Names 💖</h1>
+  <input id="yourName" placeholder="Your Name">
+  <input id="theirName" placeholder="Their Name">
+  <button id="startBtn">Start 💕</button>
+</div>
+
+<div class="card" id="question">
+  <h1 id="questionText"></h1>
+  <button id="yesBtn">Yes ❤️</button>
+  <button id="noBtn">No 😅</button>
+
+  <div id="message"></div>
+</div>
+
+<audio id="sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+
+<script>
+  const setup = document.getElementById("setup");
+  const question = document.getElementById("question");
+  const startBtn = document.getElementById("startBtn");
+
+  const yourNameInput = document.getElementById("yourName");
+  const theirNameInput = document.getElementById("theirName");
+
+  const questionText = document.getElementById("questionText");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const message = document.getElementById("message");
+  const sound = document.getElementById("sound");
+
+  let speed = 1;
+
+  startBtn.onclick = () => {
+    const yourName = yourNameInput.value || "Someone";
+    const theirName = theirNameInput.value || "You";
+
+    setup.style.display = "none";
+    question.style.display = "block";
+
+    questionText.textContent = `${theirName}, do you love ${yourName}? 🥺💖`;
+  };
+
+  yesBtn.onclick = () => {
+    message.style.display = "block";
+    message.innerHTML = "Thanks for accepting ❤️🥰";
+    sound.play();
+    createHearts();
+  };
+
+  function moveNo() {
+    speed += 0.3;
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 60);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+  }
+
+  noBtn.addEventListener("mouseover", moveNo);
+  noBtn.addEventListener("touchstart", moveNo);
+
+  function createHearts() {
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }, 300);
+  }
+</script>
+
+</body>
+</html>
